@@ -8,7 +8,7 @@ const models = require("./models/models");
 const router = require("./routes/index");
 const errorHandler = require("./middleware/ErrorHandlingMiddleware");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 //to-do delete/update
 const app = express();
 app.use(cors());
