@@ -10,7 +10,7 @@ import {
   LOGIN_ROUTE,
   REGISTRATION_ROUTE,
   SHOP_ROUTE,
-} from "./utils/const";
+} from "./utils/consts";
 
 export const authRoutes = [
   {
