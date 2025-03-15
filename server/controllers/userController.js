@@ -48,7 +48,7 @@ class UserController {
       return next(ApiError.badRequest("Wrong password"));
     }
     const token = generateJwt(user.id, user.email, user.role);
-    return res.json(token);
+    return res.json({token});
   }
 
   async auth(req, res, next) {
