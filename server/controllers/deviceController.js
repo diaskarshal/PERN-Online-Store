@@ -1,6 +1,6 @@
 const uuid = require("uuid");
 const path = require("path");
-const { Device, DeviceInfo } = require("../models/models");
+const { Device, DeviceInfo, Brand } = require("../models/models");
 const ApiError = require("../error/ApiError");
 
 class DeviceController {
@@ -8,7 +8,8 @@ class DeviceController {
     try {
       const { name, price, brandId, typeId, info } = req.body;
       const { img } = req.files;
-      let fileName = uuid.v4() + ".jpg";
+
+      const fileName = uuid.v4() + ".jpg";
       img.mv(path.resolve(__dirname, "..", "static", fileName));
 
       const device = await Device.create({
@@ -21,8 +22,8 @@ class DeviceController {
       });
 
       if (info) {
-        info = JSON.parse(info);
-        info.forEach((i) => {
+        const parsedInfo = JSON.parse(info);
+        parsedInfo.forEach((i) => {
           DeviceInfo.create({
             title: i.title,
             description: i.description,
@@ -37,41 +38,39 @@ class DeviceController {
     }
   }
 
-  async getAll(req, res) {
-    let { brandId, typeId, limit, page } = req.query;
-    page = page || 1;
-    limit = limit || 9;
-    let offset = page * limit - limit;
-    let devices;
-    if (!brandId && !typeId) {
-      devices = await Device.findAndCountAll({ limit, offset });
-    } else if (brandId && !typeId) {
-      devices = await Device.findAndCountAll({
-        where: { brandId },
+  async getAll(req, res, next) {
+    try {
+      let { brandId, typeId, limit, page } = req.query;
+      page = page || 1;
+      limit = limit || 12;
+
+      const offset = page * limit - limit;
+      const whereClause = {};
+
+      if (brandId) whereClause.brandId = brandId;
+      if (typeId) whereClause.typeId = typeId;
+
+      const devices = await Device.findAndCountAll({
+        where: whereClause,
         limit,
         offset,
+        include: [Brand],
       });
-    } else if (!brandId && typeId) {
-      devices = await Device.findAndCountAll({
-        where: { typeId },
-        limit,
-        offset,
-      });
-    } else if (brandId && typeId) {
-      devices = await Device.findAndCountAll({
-        where: { typeId, brandId },
-        limit,
-        offset,
-      });
+
+      return res.json(devices);
+    } catch (e) {
+      next(ApiError.badRequest(e.message));
     }
-    return res.json(devices);
   }
 
   async getOne(req, res) {
     const { id } = req.params;
     const device = await Device.findOne({
       where: { id },
-      include: [{ model: DeviceInfo, as: "info" }],
+      include: [
+        { model: DeviceInfo, as: "info" },
+        Brand,
+      ],
     });
     return res.json(device);
   }

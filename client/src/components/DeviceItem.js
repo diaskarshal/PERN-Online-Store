@@ -1,12 +1,12 @@
 import React from "react";
 import { Card, Col } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
-// import star from "../assets/star.png";
 import { useNavigate } from "react-router-dom";
 import { DEVICE_ROUTE } from "../utils/consts";
 
 const DeviceItem = ({ device }) => {
   const navigate = useNavigate()
+  const imageURL = `${process.env.REACT_APP_API_URL}/${device.img}`;
   return (
     <Col
       md={3}
@@ -17,9 +17,11 @@ const DeviceItem = ({ device }) => {
         <Image
           width={150}
           height={150}
-          src={device.img}
+          src={imageURL}
         />
-        <div className="text-black-50 mt-1 d-flex justify-content-between align-items-center">Samsung...</div>
+        <div className="text-black-50 mt-1 d-flex justify-content-between align-items-center">
+          {device.brand ? device.brand.name : "Mobilnik"}
+        </div>
         <div>{device.name}</div>
       </Card>
     </Col>

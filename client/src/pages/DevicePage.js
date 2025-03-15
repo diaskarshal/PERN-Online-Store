@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import {fetchOneDevice} from "../http/deviceAPI";
+import { fetchOneDevice } from "../http/deviceAPI";
 
 const DevicePage = () => {
   const [device, setDevice] = useState({ info: [] });
@@ -9,6 +9,9 @@ const DevicePage = () => {
   useEffect(() => {
     fetchOneDevice(id).then((data) => setDevice(data));
   }, [id]);
+  const imageUrl = `${process.env.REACT_APP_API_URL}/${device.img}`;
+  console.log("Image URL:", imageUrl);
+
   return (
     <Container className="mt-3">
       <Row>
@@ -16,7 +19,7 @@ const DevicePage = () => {
           <Image
             width={300}
             height={300}
-            src={process.env.REACT_APP_API_URL + device.img}
+            src={`${process.env.REACT_APP_API_URL}/${device.img}`}
           />
         </Col>
         <Col md={4}>
