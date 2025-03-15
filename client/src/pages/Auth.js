@@ -74,7 +74,7 @@ const Auth = observer(() => {
       } else {
         data = await registration(email, pwd);
       }
-      user.setUser(user);
+      user.setUser(data);
       user.setIsAuth(true);
       history(SHOP_ROUTE);
     } catch (e) {
