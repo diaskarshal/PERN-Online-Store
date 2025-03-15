@@ -64,15 +64,15 @@ const Auth = observer(() => {
   const history = useNavigate();
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [pwd, setPassword] = useState("");
 
   const click = async () => {
     try {
       let data;
       if (isLogin) {
-        data = await login(email, password);
+        data = await login(email, pwd);
       } else {
-        data = await registration(email, password);
+        data = await registration(email, pwd);
       }
       user.setUser(user);
       user.setIsAuth(true);
@@ -99,7 +99,7 @@ const Auth = observer(() => {
           <Form.Control
             className="mt-3"
             placeholder="Enter your password..."
-            value={password}
+            value={pwd}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
           />
@@ -115,7 +115,7 @@ const Auth = observer(() => {
               </div>
             )}
             <Button variant={"outline-success"} onClick={click}>
-              {isLogin ? "Войти" : "Регистрация"}
+              {isLogin ? "Log in" : "Registration"}
             </Button>
           </Row>
         </Form>
