@@ -6,7 +6,7 @@ practicing PERN stack:
 postgresql
 expressjs
 reactjs
-nodejs
+nodejs  
 
-
+//to-do delete/update
 :)

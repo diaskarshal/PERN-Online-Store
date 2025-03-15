@@ -1,19 +1,3 @@
-// import React from "react";
-// import { BrowserRouter } from "react-router-dom";
-// import AppRouter from "./components/AppRouter";
-// import NavBar from "./components/NavBar"
-
-// const App = () => {
-//   return (
-//     <BrowserRouter>
-//       <NavBar/>
-//       <AppRouter/>
-//     </BrowserRouter>
-//   );
-// };
-
-// export default App;
-
 import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./components/AppRouter";
@@ -28,12 +12,17 @@ const App = observer(() => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    check()
-      .then((data) => {
-        user.setUser(true);
-        user.setIsAuth(true);
-      })
-      .finally(() => setLoading(false));
+    const token = localStorage.getItem("token");
+    if (token) {
+      check()
+        .then((data) => {
+          user.setUser(data);
+          user.setIsAuth(true);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
   }, []);
 
   if (loading) {
