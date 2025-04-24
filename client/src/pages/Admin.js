@@ -1,13 +1,3 @@
-// import React from "react";
-
-// const Admin = () => {
-//   return <div>
-//     Admin page
-//   </div>;
-// };
-
-// export default Admin;
-
 import React, { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import CreateBrand from "../components/modals/CreateBrand";
